@@ -5,6 +5,7 @@ from operator import add
 from ..Core import KnownUnknown
 
 from ..py3_compat import reduce
+from functools import reduce
 
 geometry_types = {
     'Point': 'esriGeometryPoint',

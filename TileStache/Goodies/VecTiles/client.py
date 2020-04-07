@@ -32,18 +32,19 @@ See also:
 '''
 from math import pi, log as _log
 from threading import Thread, Lock as _Lock
+from functools import reduce
 try:
     from http.client import HTTPConnection
 except ImportError:
     # Python 2
-    from httplib import HTTPConnection
+    from http.client import HTTPConnection
 from itertools import product
 from io import BytesIO
 try:
     from urllib.parse import urlparse
 except ImportError:
     # Python 2
-    from urlparse import urlparse
+    from urllib.parse import urlparse
 from gzip import GzipFile
 
 import logging
@@ -68,7 +69,7 @@ def utf8_keys(dictionary):
         By default, json.load() returns dictionaries with unicode keys
         but Mapnik is ultra-whiny about these and rejects them.
     '''
-    return dict([(key.encode('utf8'), val) for (key, val) in dictionary.items()])
+    return dict([(key.encode('utf8'), val) for (key, val) in list(dictionary.items())])
 
 def list_tiles(query, zoom_adjust):
     ''' Return a list of tiles (z, x, y) dicts for a mapnik Query object.
@@ -90,7 +91,7 @@ def list_tiles(query, zoom_adjust):
     minrow = int(scale * (.5 - query.bbox.maxy/diameter))
     maxrow = int(scale * (.5 - query.bbox.miny/diameter))
     
-    cols, rows = range(mincol, maxcol+1), range(minrow, maxrow+1)
+    cols, rows = list(range(mincol, maxcol+1)), list(range(minrow, maxrow+1))
     return [dict(z=zoom, x=col, y=row) for (col, row) in product(cols, rows)]
 
 def load_features(jobs, host, port, path, tiles):
@@ -274,7 +275,7 @@ class Datasource (PythonDatasource):
             return PythonDatasource.wkb_features(keys=[], features=[])
         
         # build a set of shared keys
-        props = zip(*features)[1]
+        props = list(zip(*features))[1]
         keys = [set(prop.keys()) for prop in props]
         keys = reduce(lambda a, b: a & b, keys)
 

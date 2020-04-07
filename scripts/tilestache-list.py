@@ -8,7 +8,7 @@ around West Oakland (http://sta.mn/ck) in the "osm" layer, for zoom levels 12-15
 
 See `tilestache-list.py --help` for more information.
 """
-from __future__ import print_function
+
 
 from sys import stderr, path
 from optparse import OptionParser

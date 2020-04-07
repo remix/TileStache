@@ -25,6 +25,7 @@ from struct import unpack, pack
 from math import sqrt, ceil, log
 from .py3_compat import urlopen, reduce
 from operator import add
+from functools import reduce
 
 try:
     from PIL import Image

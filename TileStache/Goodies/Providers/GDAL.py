@@ -26,7 +26,7 @@ try:
     from urllib.parse import urljoin, urlparse
 except ImportError:
     # Python 2
-    from urlparse import urljoin, urlparse
+    from urllib.parse import urljoin, urlparse
 try:
     from PIL import Image
 except ImportError:
@@ -92,7 +92,7 @@ class Provider:
                 if mask_ds is None:
                     raise Exception('Failed to create dataset mask.')
 
-                [mask_ds.GetRasterBand(i).SetNoDataValue(float('nan')) for i in xrange(1, src_ds.RasterCount+1)]
+                [mask_ds.GetRasterBand(i).SetNoDataValue(float('nan')) for i in range(1, src_ds.RasterCount+1)]
 
             merc = osr.SpatialReference()
             merc.ImportFromProj4(srs)

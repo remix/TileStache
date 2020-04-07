@@ -8,7 +8,7 @@ designers and cartographers.
 
 Documentation available at http://tilestache.org/doc/
 """
-from __future__ import print_function
+
 import os.path
 
 __version__ = open(os.path.join(os.path.dirname(__file__), 'VERSION')).read().strip()
@@ -317,7 +317,7 @@ def cgiHandler(environ, config='./tilestache.cfg', debug=False):
     stdout.write('Status: %d\n' % status_code)
 
     # output gathered headers
-    for k, v in headers.items():
+    for k, v in list(headers.items()):
         stdout.write('%s: %s\n' % (k, v))
 
     stdout.write('\n')
@@ -402,7 +402,7 @@ class WSGITileServer:
         if content:
             headers.setdefault('Content-Length', str(len(content)))
 
-        start_response('%d %s' % (code, httplib.responses[code]), headers.items())
+        start_response('%d %s' % (code, httplib.responses[code]), list(headers.items()))
         return [content]
 
 def modpythonHandler(request):

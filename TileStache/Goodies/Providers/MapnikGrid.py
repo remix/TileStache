@@ -38,9 +38,9 @@ try:
     from urllib.parse import urljoin, urlparse
 except ImportError:
     # Python 2
-    from urlparse import urljoin, urlparse
+    from urllib.parse import urljoin, urlparse
 from tempfile import mkstemp
-from urllib import urlopen
+from urllib.request import urlopen
 import os
 
 try:

@@ -24,7 +24,7 @@ tile proxied from http://tile.osm.org/0/0/0.png
    
 Check tilestache-server.py --help to change these defaults.
 """
-from __future__ import print_function
+
 
 if __name__ == '__main__':
     from datetime import datetime

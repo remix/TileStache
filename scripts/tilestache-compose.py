@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import print_function
+
 
 from sys import stderr, path
 from tempfile import mkstemp
@@ -10,7 +10,7 @@ from os.path import abspath
 try:
     from _thread import allocate_lock
 except ImportError:
-    from thread import allocate_lock
+    from _thread import allocate_lock
 
 import ModestMaps
 

@@ -256,8 +256,8 @@ class Proxy:
 
         # Tell urllib2 get proxies if set in the environment variables <protocol>_proxy
         # see: https://docs.python.org/2/library/urllib2.html#urllib2.ProxyHandler
-        proxy_support = urllib2.ProxyHandler()
-        url_opener = urllib2.build_opener(proxy_support)
+        proxy_support = urllib.request.ProxyHandler()
+        url_opener = urllib.request.build_opener(proxy_support)
 
         for url in urls:
             body = url_opener.open(url, timeout=self.timeout).read()
@@ -351,12 +351,12 @@ class UrlTemplate:
                    'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax}
 
         href = self.template.safe_substitute(mapping)
-        req = urllib2.Request(href)
+        req = urllib.request.Request(href)
 
         if self.referer:
             req.add_header('Referer', self.referer)
 
-        body = urllib2.urlopen(req, timeout=self.timeout).read()
+        body = urllib.request.urlopen(req, timeout=self.timeout).read()
         tile = Verbatim(body)
 
         return tile

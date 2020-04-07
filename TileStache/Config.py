@@ -213,7 +213,7 @@ def buildConfiguration(config_dict, dirpath='.'):
 
     config = Configuration(cache, dirpath)
 
-    for (name, layer_dict) in config_dict.get('layers', {}).items():
+    for (name, layer_dict) in list(config_dict.get('layers', {}).items()):
         config.layers[name] = _parseConfigLayer(layer_dict, config, dirpath)
 
     if 'index' in config_dict:
@@ -316,7 +316,7 @@ def _parseConfigCache(cache_dict, dirpath):
     elif 'class' in cache_dict:
         _class = Core.loadClassPath(cache_dict['class'])
         kwargs = cache_dict.get('kwargs', {})
-        kwargs = dict( [(str(k), v) for (k, v) in kwargs.items()] )
+        kwargs = dict( [(str(k), v) for (k, v) in list(kwargs.items())] )
 
     else:
         raise Exception('Missing required cache name or class: %s' % json_dumps(cache_dict))
@@ -416,10 +416,10 @@ def _parseConfigLayer(layer_dict, config, dirpath):
     png_kwargs = {}
 
     if 'jpeg options' in layer_dict:
-        jpeg_kwargs = dict([(str(k), v) for (k, v) in layer_dict['jpeg options'].items()])
+        jpeg_kwargs = dict([(str(k), v) for (k, v) in list(layer_dict['jpeg options'].items())])
 
     if 'png options' in layer_dict:
-        png_kwargs = dict([(str(k), v) for (k, v) in layer_dict['png options'].items()])
+        png_kwargs = dict([(str(k), v) for (k, v) in list(layer_dict['png options'].items())])
 
     #
     # Do pixel effect
@@ -432,7 +432,7 @@ def _parseConfigLayer(layer_dict, config, dirpath):
         pixel_effect_name = pixel_effect_dict.get('name')
         if pixel_effect_name in PixelEffects.all:
             pixel_effect_kwargs = {}
-            for k, v in pixel_effect_dict.items():
+            for k, v in list(pixel_effect_dict.items()):
                 if k != 'name':
                     pixel_effect_kwargs[str(k)] = float(v)
             PixelEffectClass = PixelEffects.all[pixel_effect_name]
@@ -450,7 +450,7 @@ def _parseConfigLayer(layer_dict, config, dirpath):
     elif 'class' in provider_dict:
         _class = Core.loadClassPath(provider_dict['class'])
         provider_kwargs = provider_dict.get('kwargs', {})
-        provider_kwargs = dict( [(str(k), v) for (k, v) in provider_kwargs.items()] )
+        provider_kwargs = dict( [(str(k), v) for (k, v) in list(provider_kwargs.items())] )
 
     else:
         raise Exception('Missing required provider name or class: %s' % json_dumps(provider_dict))

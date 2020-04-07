@@ -8,7 +8,7 @@ West Oakland (http://sta.mn/ck) in the "osm" layer, for zoom levels 12-15:
 
 See `tilestache-seed.py --help` for more information.
 """
-from __future__ import print_function
+
 
 from sys import stderr, path, version
 from os.path import realpath, dirname
@@ -18,8 +18,8 @@ try:
     from urllib.parse import urlparse
     from urllib.request import urlopen
 except ImportError:
-    from urlparse import urlparse
-    from urllib import urlopen
+    from urllib.parse import urlparse
+    from urllib.request import urlopen
 
 try:
     from json import dump as json_dump
@@ -152,7 +152,7 @@ def listCoordinates(filename):
         Read coordinates from a file with one Z/X/Y coordinate per line.
     """
     coords = (line.strip().split('/') for line in open(filename, 'r'))
-    coords = (map(int, (row, column, zoom)) for (zoom, column, row) in coords)
+    coords = (list(map(int, (row, column, zoom))) for (zoom, column, row) in coords)
     coords = [Coordinate(*args) for args in coords]
 
     count = len(coords)

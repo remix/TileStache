@@ -1,7 +1,7 @@
 # python3 compatibity while retaining checking
 # for both str and unicode in python2
 try:
-    string_types = (str, unicode)
+    string_types = (str, str)
 except NameError:
     string_types = (str,)
 
@@ -22,12 +22,12 @@ try:
     from urllib.request import urlopen
     from cgi import parse_qs
     from _thread import allocate_lock
-    unichr = chr
+    chr = chr
 except ImportError:
     # Python 2
-    import httplib
-    import urllib2
-    from urlparse import urlparse, urljoin, parse_qs, parse_qsl
-    from urllib import urlopen
-    from thread import allocate_lock
-    unichr = unichr
+    import http.client
+    import urllib.request, urllib.error, urllib.parse
+    from urllib.parse import urlparse, urljoin, parse_qs, parse_qsl
+    from urllib.request import urlopen
+    from _thread import allocate_lock
+    chr = chr

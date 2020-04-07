@@ -154,12 +154,12 @@ try:
     from urllib.parse import urljoin
 except ImportError:
     # Python 2
-    from urlparse import urljoin
+    from urllib.parse import urljoin
 try:
     from urllib.request import urlopen
 except ImportError:
     # Python 2
-    from urllib import urlopen
+    from urllib.request import urlopen
 from os.path import join as pathjoin
 from xml.dom.minidom import parse as parseXML
 from io import BytesIO
@@ -186,7 +186,7 @@ except ImportError:
 from TileStache.Core import KnownUnknown
 
 # only need to check for py3 once
-from TileStache import unicode
+from TileStache import str
 
 class Provider:
     """ Provides a Photoshop-like rendering pipeline, making it possible to use
@@ -210,7 +210,7 @@ class Provider:
         """
         self.layer = layer
 
-        if type(stack) in (str, unicode):
+        if type(stack) in (str, str):
             stack = jsonload(urlopen(urljoin(layer.config.dirpath, stack)).read())
 
         if type(stack) in (list, dict):
@@ -250,7 +250,7 @@ def build_stack(obj):
         Normally, this is applied to the "stack" parameter to Composite.Provider.
     """
     if type(obj) is list:
-        layers = map(build_stack, obj)
+        layers = list(map(build_stack, obj))
         return Stack(layers)
 
     elif type(obj) is dict:
@@ -432,7 +432,7 @@ def make_color(color):
           orange: "#f90", "#ff9900", "#ff9900ff"
           transparent orange: "#f908", "#ff990088"
     """
-    if type(color) not in (str, unicode):
+    if type(color) not in (str, str):
         raise KnownUnknown('Color must be a string: %s' % repr(color))
 
     if color[0] != '#':
@@ -760,7 +760,7 @@ def makeLayer(element):
             if child.tagName == 'mask' and child.hasAttribute('src'):
                 kwargs['maskname'] = child.getAttribute('src')
 
-    print >> sys.stderr, 'Making a layer from', kwargs
+    print('Making a layer from', kwargs, file=sys.stderr)
 
     return Layer(**kwargs)
 
@@ -782,7 +782,7 @@ def makeStack(element):
             else:
                 raise Exception('Unknown element "%s"' % child.tagName)
 
-    print >> sys.stderr, 'Making a stack with %d layers' % len(layers)
+    print('Making a stack with %d layers' % len(layers), file=sys.stderr)
 
     return Stack(layers)
 

@@ -4,7 +4,7 @@ ImageProvider is known as "mapnik" in TileStache config, GridProvider is
 known as "mapnik grid". Both require Mapnik to be installed; Grid requires
 Mapnik 2.0.0 and above.
 """
-from __future__ import absolute_import
+
 from time import time
 from os.path import exists
 from itertools import count
@@ -16,7 +16,8 @@ import logging
 import json
 
 from .py3_compat import reduce, urlopen, urljoin, urlparse, allocate_lock
-from .py3_compat import unichr
+from .py3_compat import chr
+from functools import reduce
 
 # We enabled absolute_import because case insensitive filesystems
 # cause this file to be loaded twice (the name of this file
@@ -309,7 +310,7 @@ class GridProvider:
 
                     for (index, fields) in self.layers:
                         datasource = self.mapnik.layers[index].datasource
-                        fields = (type(fields) is list) and map(str, fields) or datasource.fields()
+                        fields = (type(fields) is list) and list(map(str, fields)) or datasource.fields()
 
                         mapnik.render_layer(self.mapnik, grid, layer=index, fields=fields)
 
@@ -377,7 +378,7 @@ def merge_grids(grid1, grid2):
                 outkeys.append('')
                 continue
 
-            outkey = '%d' % keygen.next()
+            outkey = '%d' % next(keygen)
             outkeys.append(outkey)
 
             datum = ingrid['data'][key]
@@ -415,7 +416,7 @@ def encode_id(id):
     if id >= 92:
         id = id + 1
     if id > 127:
-        return unichr(id)
+        return chr(id)
     return chr(id)
 
 def decode_char(char):

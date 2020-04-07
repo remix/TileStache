@@ -268,7 +268,7 @@ def local_bitmap(source, config, coord, dim):
 
     output = Image.new('RGBA', (dim, dim))
 
-    for (x, y) in product(range(x, dim, w), range(y, dim, h)):
+    for (x, y) in product(list(range(x, dim, w)), list(range(y, dim, h))):
         # crop the top-left if needed
         xmin = 0 if x > 0 else -x
         ymin = 0 if y > 0 else -y

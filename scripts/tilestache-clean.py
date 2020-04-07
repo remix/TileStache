@@ -8,7 +8,7 @@ West Oakland (http://sta.mn/ck) in the "osm" layer, for zoom levels 12-15:
 
 See `tilestache-clean.py --help` for more information.
 """
-from __future__ import print_function
+
 
 from sys import stderr, path
 from optparse import OptionParser
@@ -103,7 +103,7 @@ def listCoordinates(filename):
         Read coordinates from a file with one Z/X/Y coordinate per line.
     """
     coords = (line.strip().split('/') for line in open(filename, 'r'))
-    coords = (map(int, (row, column, zoom)) for (zoom, column, row) in coords)
+    coords = (list(map(int, (row, column, zoom))) for (zoom, column, row) in coords)
     coords = [Coordinate(*args) for args in coords]
 
     count = len(coords)
@@ -136,7 +136,7 @@ if __name__ == '__main__':
 
         if options.layer in ('ALL', 'ALL LAYERS') and options.layer not in config.layers:
             # clean every layer in the config
-            layers = config.layers.values()
+            layers = list(config.layers.values())
 
         elif options.layer not in config.layers:
             raise KnownUnknown('"%s" is not a layer I know about. Here are some that I do know about: %s.' % (options.layer, ', '.join(sorted(config.layers.keys()))))
